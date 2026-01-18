@@ -55,6 +55,28 @@ img.bouquet-img{position:absolute;width:70px;border-radius:14px;box-shadow:0 8px
     z-index: 10;
   }
 }
+  /* ===== MOBILE/SMALL SCREEN POEM SCROLL FIX ===== */
+@media (max-width: 900px) {
+  .poem-content {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 8px;
+    box-sizing: border-box;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+  }
+
+  .card button {
+    margin-top: auto;
+    position: sticky;
+    bottom: 10px;
+    z-index: 10;
+  }
+}
 </style>
 </head>
 <body>
@@ -90,35 +112,37 @@ img.bouquet-img{position:absolute;width:70px;border-radius:14px;box-shadow:0 8px
 
 <div class="page" id="p7"><div class="card"><h1>Confetti time 🎉</h1><p>Thanks for being amazing ❤️</p><button onclick="next()">Next 💖</button></div></div>
 
-<div class="page" id="p8"><div class="card"><h1>Poem – This is for you, love</h1><pre style="text-align:left;">A love that I can’t explain
-A feeling I can barely contain
-My heart so full of emotion
-My feelings, so often in motion
+<div class="page" id="p8"><div class="card"><h1>Poem – This is for you, love</h1><div class="poem-content" style="text-align:left;">
+  <p>A love that I can’t explain</p>
+  <p>A feeling I can barely contain</p>
+  <p>My heart so full of emotion</p>
+  <p>My feelings, so often in motion</p>
 
-It’s like a sweet summer’s breeze
-Weaving through the trees
-Bringing with it a gentle calm
-A feeling that can do no harm
+  <p>It’s like a sweet summer’s breeze</p>
+  <p>Weaving through the trees</p>
+  <p>Bringing with it a gentle calm</p>
+  <p>A feeling that can do no harm</p>
 
-The way it fills me with joy
-As if I’m a new found toy
-My heart so full of bliss
-I’m at a complete loss for words
+  <p>The way it fills me with joy</p>
+  <p>As if I’m a new found toy</p>
+  <p>My heart so full of bliss</p>
+  <p>I’m at a complete loss for words</p>
 
-The perfect love for me
-Is the one that sets me free
-Where I can be myself
-And know that I’m loved for me
+  <p>The perfect love for me</p>
+  <p>Is the one that sets me free</p>
+  <p>Where I can be myself</p>
+  <p>And know that I’m loved for me</p>
 
-Your love is like a warm embrace
-Filling me with grace
-Your kindness shines so bright
-That I am filled with delight
+  <p>Your love is like a warm embrace</p>
+  <p>Filling me with grace</p>
+  <p>Your kindness shines so bright</p>
+  <p>That I am filled with delight</p>
 
-Your love so full of life
-It’s like a never-ending light
-It brings me comfort and peace
-A feeling that will never cease</pre><button onclick="next()">Next 🌙</button></div></div>
+  <p>Your love so full of life</p>
+  <p>It’s like a never-ending light</p>
+  <p>It brings me comfort and peace</p>
+  <p>A feeling that will never cease</p>
+</div><button onclick="next()">Next 🌙</button></div></div>
 
 <div class="page" id="p9"><div class="card"><h1>The moon is beautiful, isn't it? 🌕</h1>
 <img src="moon.jpg" style="width:180px;border-radius:12px;margin-top:12px;">
@@ -226,6 +250,7 @@ function loadBouquet(){
 </body>
 
 </html>
+
 
 
 
