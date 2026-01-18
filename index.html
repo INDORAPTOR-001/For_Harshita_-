@@ -33,8 +33,15 @@ img.bouquet-img{position:absolute;width:70px;border-radius:14px;box-shadow:0 8px
     box-sizing: border-box;
   }
            }
-  /* ===== FIX 2: KEEP NEXT BUTTON VISIBLE ON MOBILE ===== */
-@media (max-width: 600px) {
+  /* ===== MOBILE/TABLET/LAPTOP POEM SCROLL + NEXT BUTTON ===== */
+@media (max-width: 900px) {
+  .poem-content {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 8px;
+    box-sizing: border-box;
+  }
+
   .card {
     display: flex;
     flex-direction: column;
@@ -47,7 +54,7 @@ img.bouquet-img{position:absolute;width:70px;border-radius:14px;box-shadow:0 8px
     bottom: 10px;
     z-index: 10;
   }
-  }
+}
 </style>
 </head>
 <body>
@@ -219,6 +226,7 @@ function loadBouquet(){
 </body>
 
 </html>
+
 
 
 
