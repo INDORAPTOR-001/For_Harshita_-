@@ -249,7 +249,8 @@ img.bouquet-img {
   <div class="card">
     <h1>Hey Harshitaaaaaa 🌹</h1>
     <p>I made something just justt justttt for youuuuu.</p>
-    <button onclick="nextToMiniGame(); music.play()">Continue 💌</button>
+    <button onclick="nextToMiniGame()">Continue 💌</button>
+    </div>
 </div>
 <div class="page" id="p1b">
   <div class="card">
@@ -337,103 +338,147 @@ Your lovingly, Indoraaaa / Mr. NRI / Mr. Angreez 💖</p>
 <div class="page" id="heartbreak"><div class="card"><h1>You broke my heart 💔🥀</h1><button onclick="replay()">Try again 🔁</button></div></div>
 
 <script>
-let current=1,i=0,j=0,hoverCount=0;
-const music=document.getElementById("music");
-const muteBtn=document.getElementById("muteBtn");
-const typingLine="You're in my mind 24/7. Not occasionally. Just always.";
-const sweetLine="Thinking of you makes my heart skip a beat ❤️💓";
+let current = 1, i = 0, j = 0, hoverCount = 0;
+const music = document.getElementById("music");
+const muteBtn = document.getElementById("muteBtn");
+const typingLine = "You're in my mind 24/7. Not occasionally. Just always.";
+const sweetLine = "Thinking of you makes my heart skip a beat ❤️💓";
 
-function next(startMusic=false){
-  document.getElementById("p"+current).classList.remove("active");
+// PAGE NAVIGATION
+function next(startMusic = false) {
+  document.getElementById("p" + current).classList.remove("active");
   current++;
-  if(current>11) current=11;
-  document.getElementById("p"+current).classList.add("active");
-  if(startMusic) music.play();
-  if(current===2) typeEffect();
-  if(current===5) sweetEffect();
-  if(current===6) loadBouquet();
+  if (current > 11) current = 11;
+  document.getElementById("p" + current).classList.add("active");
+
+  if (startMusic) music.play().catch(() => {});
+  if (current === 2) typeEffect();
+  if (current === 5) sweetEffect();
+  if (current === 6) loadBouquet();
 }
-  function nextToMiniGame() {
-  document.getElementById("p1").classList.remove("active"); // hide page 1
-  document.getElementById("p1b").classList.add("active");    // show mini-game page
+
+function nextToMiniGame() {
+  document.getElementById("p1").classList.remove("active");
+  document.getElementById("p1b").classList.add("active");
+  shuffleCups();
+  randomizeHeart();
+  music.play().catch(() => {});
+}
+
+// TYPE EFFECTS
+function typeEffect() {
+  if (i < typingLine.length) {
+    document.getElementById("typeText").innerHTML += typingLine.charAt(i);
+    i++;
+    setTimeout(typeEffect, 40);
   }
+}
 
-function typeEffect(){if(i<typingLine.length){document.getElementById("typeText").innerHTML+=typingLine.charAt(i);i++;setTimeout(typeEffect,40);}}
-function sweetEffect(){if(j<sweetLine.length){document.getElementById("sweetText").innerHTML+=sweetLine.charAt(j);j++;setTimeout(sweetEffect,40);}}
-function toggleMusic(){if(music.paused){music.play(); muteBtn.textContent="🔊";}else{music.pause(); muteBtn.textContent="🔇";}}
-function replay(){location.reload();}
+function sweetEffect() {
+  if (j < sweetLine.length) {
+    document.getElementById("sweetText").innerHTML += sweetLine.charAt(j);
+    j++;
+    setTimeout(sweetEffect, 40);
+  }
+}
 
-// Heart trail
-document.addEventListener("click",(e)=>{
-  const h=document.createElement("div");h.className="tap-heart";h.textContent="❤️";
-  h.style.left=e.clientX+"px"; h.style.top=e.clientY+"px";
-  document.body.appendChild(h); setTimeout(()=>h.remove(),1500);
+// MUSIC TOGGLE
+function toggleMusic() {
+  if (music.paused) {
+    music.play().catch(() => {});
+    muteBtn.textContent = "🔊";
+  } else {
+    music.pause();
+    muteBtn.textContent = "🔇";
+  }
+}
+
+// REPLAY
+function replay() {
+  location.reload();
+}
+
+// HEART TRAIL
+document.addEventListener("click", e => {
+  const h = document.createElement("div");
+  h.className = "tap-heart";
+  h.textContent = "❤️";
+  h.style.left = e.clientX + "px";
+  h.style.top = e.clientY + "px";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 1500);
 });
 
-// Floating hearts/roses
-const icons=["❤️","🌹"];
-for(let k=0;k<35;k++){const f=document.createElement("div");f.className="float";f.innerText=icons[Math.floor(Math.random()*2)];f.style.left=Math.random()*100+"vw";f.style.animationDuration=(5+Math.random()*6)+"s";document.body.appendChild(f);}
+// FLOATING HEARTS/ROSES
+const icons = ["❤️", "🌹"];
+for (let k = 0; k < 35; k++) {
+  const f = document.createElement("div");
+  f.className = "float";
+  f.innerText = icons[Math.floor(Math.random() * 2)];
+  f.style.left = Math.random() * 100 + "vw";
+  f.style.animationDuration = (5 + Math.random() * 6) + "s";
+  document.body.appendChild(f);
+}
 
-// Yes click
-function yesClick(){next();}
+// YES BUTTON
+function yesClick() { next(); }
 
-// Not sure yet button dodge 30 times, 31st → heartbreak
-// Not sure yet button dodge (PC + mobile)
+// NOT SURE BUTTON
 const noBtn = document.getElementById("noBtn");
-
-const moveNoBtn = () => {
-  hoverCount++;
-  if (hoverCount > 30) {
-    document.getElementById("p" + current).classList.remove("active");
-    document.getElementById("heartbreak").classList.add("active");
-  } else {
-    const x = Math.random() * 60 + 10;
-    const y = Math.random() * 60 + 10;
-    noBtn.style.position = "absolute";
-    noBtn.style.left = x + "%";
-    noBtn.style.top = y + "%";
-  }
-};
-
 if (noBtn) {
+  const moveNoBtn = () => {
+    hoverCount++;
+    if (hoverCount > 30) {
+      document.getElementById("p" + current).classList.remove("active");
+      document.getElementById("heartbreak").classList.add("active");
+    } else {
+      const x = Math.random() * 60 + 10;
+      const y = Math.random() * 60 + 10;
+      noBtn.style.position = "absolute";
+      noBtn.style.left = x + "%";
+      noBtn.style.top = y + "%";
+    }
+  };
   noBtn.addEventListener("mouseenter", moveNoBtn); // PC
   noBtn.addEventListener("touchstart", moveNoBtn); // Mobile
-  }
+}
 
-// Bouquet
-function loadBouquet(){
-  const bouquet=document.getElementById("bouquet");
-  bouquet.innerHTML="";
-  const pics=["pic1.jpg","pic2.jpg","pic3.jpg","pic4.jpg","pic5.jpg"];
-  const positions=[
-    {top:0,left:95},
-    {top:60,left:30},
-    {top:60,left:160},
-    {top:120,left:55},
-    {top:120,left:130}
+// BOUQUET
+function loadBouquet() {
+  const bouquet = document.getElementById("bouquet");
+  bouquet.innerHTML = "";
+  const pics = ["pic1.jpg", "pic2.jpg", "pic3.jpg", "pic4.jpg", "pic5.jpg"];
+  const positions = [
+    { top: 0, left: 95 },
+    { top: 60, left: 30 },
+    { top: 60, left: 160 },
+    { top: 120, left: 55 },
+    { top: 120, left: 130 }
   ];
-  let maxBottom=0;
-  for(let i=0;i<pics.length;i++){
-    const img=document.createElement("img");
-    img.src=pics[i];
-    img.className="bouquet-img";
-    img.style.top=positions[i].top+"px";
-    img.style.left=positions[i].left+"px";
-    img.style.transformOrigin="50% 50%";
-    img.style.animationDelay=(i*0.2)+"s";
-    bouquet.appendChild(img);
-    let bottom=positions[i].top+70;
-    if(bottom>maxBottom) maxBottom=bottom;
-  }
-  const wrap=document.createElement("div");
-  wrap.className="bouquet-wrap";
-  wrap.style.left="50%";
-  wrap.style.transform="translateX(-50%)";
-  wrap.style.top=maxBottom+"px";
-  bouquet.appendChild(wrap);
-  }
-/* ===== CUP MINI GAME (FINAL) ===== */
 
+  let maxBottom = 0;
+  for (let i = 0; i < pics.length; i++) {
+    const img = document.createElement("img");
+    img.src = pics[i];
+    img.className = "bouquet-img";
+    img.style.top = positions[i].top + "px";
+    img.style.left = positions[i].left + "px";
+    img.style.transformOrigin = "50% 50%";
+    img.style.animationDelay = (i * 0.2) + "s";
+    bouquet.appendChild(img);
+    const bottom = positions[i].top + 70;
+    if (bottom > maxBottom) maxBottom = bottom;
+  }
+
+  const wrap = document.createElement("div");
+  wrap.className = "bouquet-wrap";
+  wrap.style.left = "50%";
+  wrap.style.transform = "translateX(-50%)";
+  wrap.style.top = maxBottom + "px";
+  bouquet.appendChild(wrap);
+}
+
+/* ===== CUP MINI GAME ===== */
 const cups = document.querySelectorAll("#p1b .cup");
 const cupMessage = document.getElementById("cupMessage");
 const tryAgainBtn = document.getElementById("tryAgainBtn");
@@ -442,12 +487,12 @@ let heartIndex = 0;
 let shuffling = false;
 let gameOver = false;
 
-/* Randomize heart position */
+// Randomize heart
 function randomizeHeart() {
   heartIndex = Math.floor(Math.random() * cups.length);
 }
 
-/* Shuffle cups visually */
+// Shuffle cups
 function shuffleCups(times = 5, delay = 300) {
   shuffling = true;
   gameOver = false;
@@ -455,16 +500,14 @@ function shuffleCups(times = 5, delay = 300) {
 
   const shuffleInterval = setInterval(() => {
     const order = [...cups.keys()].sort(() => Math.random() - 0.5);
-
     cups.forEach((cup, i) => {
       cup.style.order = order[i];
       cup.style.transform = "rotate(180deg) translateY(-20px)";
+      cup.classList.remove("show"); // hide any revealed hearts
     });
 
     setTimeout(() => {
-      cups.forEach(cup => {
-        cup.style.transform = "rotate(180deg)";
-      });
+      cups.forEach(cup => cup.style.transform = "rotate(180deg)");
     }, delay / 2);
 
     count++;
@@ -476,21 +519,15 @@ function shuffleCups(times = 5, delay = 300) {
   }, delay);
 }
 
-/* Initial shuffle */
-shuffleCups();
-
-/* Cup click handler */
+// Cup click
 cups.forEach(cup => {
   cup.addEventListener("click", () => {
     if (shuffling || gameOver) return;
 
-    const index = [...cups].indexOf(cup);
-
-    // Lift animation
+    const index = parseInt(cup.getAttribute("data-index"));
     cup.style.transform = "rotate(180deg) translateY(-50px)";
-    setTimeout(() => {
-      cup.style.transform = "rotate(180deg)";
-    }, 500);
+    cup.classList.add("show"); // reveals heart
+    setTimeout(() => cup.style.transform = "rotate(180deg)", 500);
 
     if (index === heartIndex) {
       gameOver = true;
@@ -510,16 +547,18 @@ cups.forEach(cup => {
   });
 });
 
-/* Try Again button */
+// Try Again button
 tryAgainBtn.addEventListener("click", () => {
   cupMessage.textContent = "";
   tryAgainBtn.style.display = "none";
+  cups.forEach(c => c.classList.remove("show"));
   shuffleCups();
 });
-</script> 
+</script>
 </body>
 
 </html>
+
 
 
 
