@@ -140,29 +140,32 @@ img.bouquet-img {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
 }
+/* ===== POEM FIX (CLEAN & SAFE) ===== */
 
-/* ===== POEM SCROLL (MOBILE ONLY) ===== */
+/* Desktop / Laptop */
+.poem-content {
+  text-align: left;
+}
+
+/* Mobile & small screens ONLY */
 @media (max-width: 900px) {
-  #p8 .card {
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh;
-  }
-
-  #p8 .poem-content {
-    max-height: 65vh;
+  .poem-content {
+    max-height: 60vh;
     overflow-y: auto;
     padding-right: 8px;
     box-sizing: border-box;
   }
 
-  #p8 button {
-    margin-top: auto;
-    position: sticky;
-    bottom: 12px;
-    z-index: 20;
+  .card {
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
   }
-}
+
+  .card button {
+    margin-top: auto;
+  }
+  }
 </style>
 </head>
 <body>
@@ -341,6 +344,7 @@ function loadBouquet(){
 </body>
 
 </html>
+
 
 
 
