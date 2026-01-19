@@ -202,7 +202,24 @@ img.bouquet-img {
   font-size: 16px;
   cursor: pointer;
     }
-  
+  .cup {
+  position: relative;
+}
+
+.cup .inside {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(180deg);
+  font-size: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.cup.show .inside {
+  opacity: 1;
+      }
 </style>
 </head>
 <body>
@@ -226,10 +243,10 @@ img.bouquet-img {
     <p>Find where the heart is hidden.</p>
 
     <div class="cups">
-      <div class="cup" data-index="0">🗑️</div>
-      <div class="cup" data-index="1">🗑️</div>
-      <div class="cup" data-index="2">🗑️</div>
-    </div>
+  <div class="cup" data-index="0"><span class="inside"></span>🗑️</div>
+  <div class="cup" data-index="1"><span class="inside"></span>🗑️</div>
+  <div class="cup" data-index="2"><span class="inside"></span>🗑️</div>
+</div>
 
     <p id="cupMessage"></p>
     <button id="tryAgainBtn" style="display:none;">Try Again 🔄</button>
@@ -460,6 +477,7 @@ tryAgainBtn.addEventListener("click", () => {
 </body>
 
 </html>
+
 
 
 
