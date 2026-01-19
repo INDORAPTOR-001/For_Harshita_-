@@ -166,6 +166,29 @@ img.bouquet-img {
     margin-top: auto;
   }
   }
+  /* ===== CUP MINI GAME ===== */
+.cups {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.cup {
+  font-size: 48px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.cup:hover {
+  transform: scale(1.2);
+}
+
+#cupMessage {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #ff4d6d;
+  min-height: 24px;
+  }
 </style>
 </head>
 <body>
@@ -176,8 +199,21 @@ img.bouquet-img {
 </audio>
 
 <!-- Pages -->
-<div class="page active" id="p1"><div class="card"><h1>Hey Harshitaaaaaa 🌹</h1><p>I made something just justt justttt for youuuuu.</p><button onclick="next(true)">Continue 💌</button></div></div>
+<div class="page active" id="p1"><div class="card"><h1>Hey Harshitaaaaaa 🌹</h1><p>I made something just justt justttt for youuuuu.</p><button onclick="nextToMiniGame()">Continue 💌</button></div></div>
+<div class="page" id="p1b">
+  <div class="card">
+    <h1>Mini Game 🥺❤️</h1>
+    <p>Find where the heart is hidden 👀.</p>
 
+    <div class="cups">
+      <div class="cup" data-index="0">🥤</div>
+      <div class="cup" data-index="1">🥤</div>
+      <div class="cup" data-index="2">🥤</div>
+    </div>
+
+    <p id="cupMessage"></p>
+  </div>
+                                                                                                                                                                                        </div>
 <div class="page" id="p2"><div class="card"><div id="typeText" class="type"></div><button onclick="next()">Next ❤️</button></div></div>
 
 <div class="page" id="p3"><div class="card">
@@ -265,6 +301,10 @@ function next(startMusic=false){
   if(current===5) sweetEffect();
   if(current===6) loadBouquet();
 }
+  function nextToMiniGame() {
+  document.getElementById("p1").classList.remove("active"); // hide page 1
+  document.getElementById("p1b").classList.add("active");    // show mini-game page
+  }
 
 function typeEffect(){if(i<typingLine.length){document.getElementById("typeText").innerHTML+=typingLine.charAt(i);i++;setTimeout(typeEffect,40);}}
 function sweetEffect(){if(j<sweetLine.length){document.getElementById("sweetText").innerHTML+=sweetLine.charAt(j);j++;setTimeout(sweetEffect,40);}}
@@ -340,10 +380,30 @@ function loadBouquet(){
   wrap.style.top=maxBottom+"px";
   bouquet.appendChild(wrap);
 }
+  // ===== CUP MINI GAME =====
+const cups = document.querySelectorAll("#p1b .cup");
+const cupMessage = document.getElementById("cupMessage");
+let heartIndex = Math.floor(Math.random() * 3); // heart hidden in a random cup
+
+cups.forEach(cup => {
+  cup.addEventListener("click", () => {
+    const index = parseInt(cup.getAttribute("data-index"));
+
+    if (index === heartIndex) {
+      cupMessage.textContent = "You always find my heart hehe ❤️";
+      setTimeout(() => next(), 1200); // proceed to next page after 1.2s
+    } else {
+      cupMessage.textContent = "Oops! Try again 😅";
+      // shuffle heart to a new random cup
+      heartIndex = Math.floor(Math.random() * 3);
+    }
+  });
+});
 </script>
 </body>
 
 </html>
+
 
 
 
