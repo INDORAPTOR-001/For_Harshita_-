@@ -165,8 +165,7 @@ img.bouquet-img {
   .card button {
     margin-top: auto;
   }
-  }
-  /* ===== CUP MINI GAME ===== */
+  /* ===== CUP MINI GAME STYLING ===== */
 .cups {
   display: flex;
   justify-content: space-around;
@@ -174,13 +173,15 @@ img.bouquet-img {
 }
 
 .cup {
-  font-size: 48px;
+  font-size: 60px;             /* bigger cups */
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transform: rotate(180deg);   /* upside-down */
+  transition: transform 0.5s ease; /* smooth lift */
+  user-select: none;
 }
 
-.cup:hover {
-  transform: scale(1.2);
+.cup.lift {
+  transform: rotate(180deg) translateY(-50px); /* lift while still upside down */
 }
 
 #cupMessage {
@@ -188,7 +189,20 @@ img.bouquet-img {
   font-size: 18px;
   color: #ff4d6d;
   min-height: 24px;
-  }
+}
+
+#tryAgainBtn {
+  display: none;
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background: #ff4d6d;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+    }
+  
 </style>
 </head>
 <body>
@@ -199,20 +213,58 @@ img.bouquet-img {
 </audio>
 
 <!-- Pages -->
-<div class="page active" id="p1"><div class="card"><h1>Hey Harshitaaaaaa 🌹</h1><p>I made something just justt justttt for youuuuu.</p><button onclick="nextToMiniGame()">Continue 💌</button></div></div>
+<div class="page active" id="p1"><div class="card"><h1>Hey Harshitaaaaaa 🌹</h1><p>I made something just justt justttt for youuuuu.</p><button onclick="nextToMiniGame()">Continue/* ===== CUP MINI GAME STYLING ===== */
+.cups {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.cup {
+  font-size: 60px;             /* bigger cups */
+  cursor: pointer;
+  transform: rotate(180deg);   /* upside-down */
+  transition: transform 0.5s ease; /* smooth lift */
+  user-select: none;
+}
+
+.cup.lift {
+  transform: rotate(180deg) translateY(-50px); /* lift while still upside down */
+}
+
+#cupMessage {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #ff4d6d;
+  min-height: 24px;
+}
+
+#tryAgainBtn {
+  display: none;
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background: #ff4d6d;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  } 💌</button></div></div>
 <div class="page" id="p1b">
   <div class="card">
     <h1>Mini Game 🥺❤️</h1>
-    <p>Find where the heart is hidden 👀.</p>
+    <p>Find where the heart is hidden.</p>
 
     <div class="cups">
-      <div class="cup" data-index="0">🥤</div>
-      <div class="cup" data-index="1">🥤</div>
-      <div class="cup" data-index="2">🥤</div>
+      <div class="cup" data-index="0">🗑️</div>
+      <div class="cup" data-index="1">🗑️</div>
+      <div class="cup" data-index="2">🗑️</div>
     </div>
 
     <p id="cupMessage"></p>
+    <button id="tryAgainBtn" style="display:none;">Try Again 🔄</button>
   </div>
+</div>
                                                                                                                                                                                         </div>
 <div class="page" id="p2"><div class="card"><div id="typeText" class="type"></div><button onclick="next()">Next ❤️</button></div></div>
 
@@ -380,29 +432,65 @@ function loadBouquet(){
   wrap.style.top=maxBottom+"px";
   bouquet.appendChild(wrap);
 }
-  // ===== CUP MINI GAME =====
+  // ===== CUP MINI GAME (Animated + Shuffle) =====
 const cups = document.querySelectorAll("#p1b .cup");
 const cupMessage = document.getElementById("cupMessage");
-let heartIndex = Math.floor(Math.random() * 3); // heart hidden in a random cup
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+let heartIndex = Math.floor(Math.random() * 3); // heart hidden initially
 
+// Function to shuffle cups visually
+function shuffleCups(times = 5, delay = 300) {
+  let count = 0;
+  const shuffleInterval = setInterval(() => {
+    // Swap positions randomly
+    const positions = [0, 1, 2].sort(() => Math.random() - 0.5);
+    cups.forEach((cup, i) => {
+      cup.style.order = positions[i]; // change flex order to shuffle
+      cup.style.transform = "translateY(-20px)"; // lift animation
+    });
+    setTimeout(() => {
+      cups.forEach(cup => cup.style.transform = "translateY(0px)"); // put back down
+    }, delay / 2);
+
+    count++;
+    if (count >= times) clearInterval(shuffleInterval);
+  }, delay);
+}
+
+// Initialize shuffle on page load
+shuffleCups();
+
+// Handle cup click
 cups.forEach(cup => {
   cup.addEventListener("click", () => {
     const index = parseInt(cup.getAttribute("data-index"));
+    // Lift clicked cup
+    cup.style.transform = "translateY(-50px)";
+    setTimeout(() => cup.style.transform = "translateY(0px)", 500);
 
     if (index === heartIndex) {
-      cupMessage.textContent = "You always find my heart hehe ❤️";
-      setTimeout(() => next(), 1200); // proceed to next page after 1.2s
+      cupMessage.textContent = "You always find my heart ❤️";
+      tryAgainBtn.style.display = "none"; // hide try again
+      setTimeout(() => next(), 1000);
     } else {
       cupMessage.textContent = "Oops! Try again 😅";
-      // shuffle heart to a new random cup
-      heartIndex = Math.floor(Math.random() * 3);
+      tryAgainBtn.style.display = "inline-block"; // show try again
     }
   });
+});
+
+// Try Again button reshuffle
+tryAgainBtn.addEventListener("click", () => {
+  heartIndex = Math.floor(Math.random() * 3);
+  cupMessage.textContent = "";
+  tryAgainBtn.style.display = "none";
+  shuffleCups();
 });
 </script>
 </body>
 
 </html>
+
 
 
 
