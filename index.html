@@ -202,13 +202,22 @@ img.bouquet-img {
   font-size: 16px;
   cursor: pointer;
     }
-  .cup {
+ .cup {
   position: relative;
-  font-size: 60px;        /* size of cup emoji */
+  display: inline-block;
+  font-size: 60px;        /* cup emoji size */
   cursor: pointer;
   transform: rotate(180deg); /* upside-down cup */
   transition: transform 0.5s ease; /* smooth lift */
   user-select: none;
+}
+
+.cup .lid {
+  display: inline-block;
+}
+
+.cup.lift {
+  transform: rotate(180deg) translateY(-50px); /* lift while upside-down */
 }
 
 .cup .inside {
@@ -220,11 +229,11 @@ img.bouquet-img {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
-  }
+}
 
 .cup.show .inside {
   opacity: 1;
-      }
+  }
 </style>
 </head>
 <body>
@@ -248,10 +257,10 @@ img.bouquet-img {
     <p>Find where the heart is hidden.</p>
 
     <div class="cups">
-  <div class="cup" data-index="0"><span class="inside"></span>🗑️</div>
-  <div class="cup" data-index="1"><span class="inside"></span>🗑️</div>
-  <div class="cup" data-index="2"><span class="inside"></span>🗑️</div>
-</div>
+  <div class="cup" data-index="0"><span class="inside"></span><span class="lid">🗑️</span></div>
+  <div class="cup" data-index="1"><span class="inside"></span><span class="lid">🗑️</span></div>
+  <div class="cup" data-index="2"><span class="inside"></span><span class="lid">🗑️</span></div>
+    </div> 
 
     <p id="cupMessage"></p>
     <button id="tryAgainBtn" style="display:none;">Try Again 🔄</button>
@@ -482,6 +491,7 @@ tryAgainBtn.addEventListener("click", () => {
 </body>
 
 </html>
+
 
 
 
