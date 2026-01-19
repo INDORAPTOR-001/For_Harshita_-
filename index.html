@@ -264,7 +264,6 @@ img.bouquet-img {
 
     <p id="cupMessage"></p>
     <button id="tryAgainBtn" style="display:none;">Try Again 🔄</button>
-    </div>
 </div>
                                                                                                                                                                                         </div>
 <div class="page" id="p2"><div class="card"><div id="typeText" class="type"></div><button onclick="next()">Next ❤️</button></div></div>
@@ -432,6 +431,7 @@ function loadBouquet(){
   wrap.style.transform="translateX(-50%)";
   wrap.style.top=maxBottom+"px";
   bouquet.appendChild(wrap);
+  }
 /* ===== CUP MINI GAME (FINAL) ===== */
 
 const cups = document.querySelectorAll("#p1b .cup");
@@ -516,9 +516,10 @@ tryAgainBtn.addEventListener("click", () => {
   tryAgainBtn.style.display = "none";
   shuffleCups();
 });
-</script>
+</script> 
 </body>
 
 </html>
+
 
 
