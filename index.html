@@ -479,34 +479,51 @@ const tryAgainBtn = document.getElementById("tryAgainBtn");
 let heartIndex = 0;
 let shuffling = false;
 let gameOver = false;
+let shuffleInterval = null;
 
 function randomizeHeart() {
   heartIndex = Math.floor(Math.random() * cups.length);
 }
 
 function shuffleCups(times = 5, delay = 300) {
+  // STOP any previous shuffle first
+  if (shuffleInterval) {
+    clearInterval(shuffleInterval);
+    shuffleInterval = null;
+  }
+
   shuffling = true;
   gameOver = false;
   cupMessage.textContent = "";
   tryAgainBtn.style.display = "none";
-  cups.forEach(c => c.classList.remove("show"));
+
+  cups.forEach(cup => cup.classList.remove("show"));
 
   let count = 0;
-  const interval = setInterval(() => {
-    const order = [...cups.keys()].sort(()=>Math.random()-0.5);
-    cups.forEach((cup,i)=>{
+
+  shuffleInterval = setInterval(() => {
+    const order = [...cups.keys()].sort(() => Math.random() - 0.5);
+
+    cups.forEach((cup, i) => {
       cup.style.order = order[i];
       cup.style.transform = "rotate(180deg) translateY(-20px)";
     });
-    setTimeout(()=>cups.forEach(c=>c.style.transform="rotate(180deg)"), delay/2);
 
-    if (++count >= times) {
-      clearInterval(interval);
+    setTimeout(() => {
+      cups.forEach(cup => {
+        cup.style.transform = "rotate(180deg)";
+      });
+    }, delay / 2);
+
+    count++;
+    if (count >= times) {
+      clearInterval(shuffleInterval);
+      shuffleInterval = null;
       randomizeHeart();
-      shuffling = false;
+      shuffling = false; // 🔴 THIS is the key
     }
   }, delay);
-}
+  }
 
 cups.forEach((cup, index) => {
   cup.addEventListener("click", () => {
@@ -539,6 +556,7 @@ shuffleCups();
 </script>
 </body>
 </html>
+
 
 
 
