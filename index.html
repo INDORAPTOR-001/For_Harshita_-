@@ -339,51 +339,54 @@ Your lovingly, Indoraaaa / Mr. NRI / Mr. Angreez 💖</p>
 <div class="page" id="heartbreak"><div class="card"><h1>You broke my heart 💔🥀</h1><button onclick="replay()">Try again 🔁</button></div></div>
 
 <script>
-let current = 1, i = 0, j = 0, hoverCount = 0;
+/* ================= GLOBAL STATE ================= */
+let current = 1;
+let i = 0, j = 0;
+let hoverCount = 0;
+
 const music = document.getElementById("music");
 const muteBtn = document.getElementById("muteBtn");
+
+/* ================= TEXT ================= */
 const typingLine = "You're in my mind 24/7. Not occasionally. Just always.";
 const sweetLine = "Thinking of you makes my heart skip a beat ❤️💓";
 
-// PAGE NAVIGATION
-function next(startMusic = false) {
-  document.getElementById("p" + current).classList.remove("active");
-  current++;
-  if (current > 11) current = 11;
-  document.getElementById("p" + current).classList.add("active");
+/* ================= PAGE NAV ================= */
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-  if (startMusic) music.play().catch(() => {});
+function next() {
+  showPage("p" + (++current));
+
   if (current === 2) typeEffect();
   if (current === 5) sweetEffect();
   if (current === 6) loadBouquet();
 }
 
 function nextToMiniGame() {
-  document.getElementById("p1").classList.remove("active");
-  document.getElementById("p1b").classList.add("active");
+  showPage("p1b");
   shuffleCups();
-  randomizeHeart();
   music.play().catch(() => {});
 }
 
-// TYPE EFFECTS
+/* ================= TYPE EFFECTS ================= */
 function typeEffect() {
   if (i < typingLine.length) {
-    document.getElementById("typeText").innerHTML += typingLine.charAt(i);
-    i++;
+    document.getElementById("typeText").innerHTML += typingLine.charAt(i++);
     setTimeout(typeEffect, 40);
   }
 }
 
 function sweetEffect() {
   if (j < sweetLine.length) {
-    document.getElementById("sweetText").innerHTML += sweetLine.charAt(j);
-    j++;
+    document.getElementById("sweetText").innerHTML += sweetLine.charAt(j++);
     setTimeout(sweetEffect, 40);
   }
 }
 
-// MUSIC TOGGLE
+/* ================= MUSIC ================= */
 function toggleMusic() {
   if (music.paused) {
     music.play().catch(() => {});
@@ -394,12 +397,12 @@ function toggleMusic() {
   }
 }
 
-// REPLAY
+/* ================= REPLAY ================= */
 function replay() {
   location.reload();
 }
 
-// HEART TRAIL
+/* ================= HEART TRAIL ================= */
 document.addEventListener("click", e => {
   const h = document.createElement("div");
   h.className = "tap-heart";
@@ -410,76 +413,65 @@ document.addEventListener("click", e => {
   setTimeout(() => h.remove(), 1500);
 });
 
-// FLOATING HEARTS/ROSES
-const icons = ["❤️", "🌹"];
-for (let k = 0; k < 35; k++) {
-  const f = document.createElement("div");
-  f.className = "float";
-  f.innerText = icons[Math.floor(Math.random() * 2)];
-  f.style.left = Math.random() * 100 + "vw";
-  f.style.animationDuration = (5 + Math.random() * 6) + "s";
-  document.body.appendChild(f);
+/* ================= FLOATING ICONS ================= */
+["❤️","🌹"].forEach(() => {
+  for (let k = 0; k < 18; k++) {
+    const f = document.createElement("div");
+    f.className = "float";
+    f.textContent = Math.random() > 0.5 ? "❤️" : "🌹";
+    f.style.left = Math.random() * 100 + "vw";
+    f.style.animationDuration = (5 + Math.random() * 6) + "s";
+    document.body.appendChild(f);
+  }
+});
+
+/* ================= YES / NO ================= */
+function yesClick() {
+  next();
 }
 
-// YES BUTTON
-function yesClick() { next(); }
-
-// NOT SURE BUTTON
 const noBtn = document.getElementById("noBtn");
 if (noBtn) {
-  const moveNoBtn = () => {
+  const dodge = () => {
     hoverCount++;
-    if (hoverCount > 30) {
-      document.getElementById("p" + current).classList.remove("active");
-      document.getElementById("heartbreak").classList.add("active");
-    } else {
-      const x = Math.random() * 60 + 10;
-      const y = Math.random() * 60 + 10;
-      noBtn.style.position = "absolute";
-      noBtn.style.left = x + "%";
-      noBtn.style.top = y + "%";
-    }
+    if (hoverCount > 30) showPage("heartbreak");
+    noBtn.style.position = "absolute";
+    noBtn.style.left = Math.random() * 70 + "%";
+    noBtn.style.top = Math.random() * 70 + "%";
   };
-  noBtn.addEventListener("mouseenter", moveNoBtn); // PC
-  noBtn.addEventListener("touchstart", moveNoBtn); // Mobile
+  noBtn.addEventListener("mouseenter", dodge);
+  noBtn.addEventListener("touchstart", dodge);
 }
 
-// BOUQUET
+/* ================= BOUQUET ================= */
 function loadBouquet() {
   const bouquet = document.getElementById("bouquet");
   bouquet.innerHTML = "";
-  const pics = ["pic1.jpg", "pic2.jpg", "pic3.jpg", "pic4.jpg", "pic5.jpg"];
-  const positions = [
-    { top: 0, left: 95 },
-    { top: 60, left: 30 },
-    { top: 60, left: 160 },
-    { top: 120, left: 55 },
-    { top: 120, left: 130 }
+  const pics = ["pic1.jpg","pic2.jpg","pic3.jpg","pic4.jpg","pic5.jpg"];
+  const pos = [
+    [0,95],[60,30],[60,160],[120,55],[120,130]
   ];
+  let max = 0;
 
-  let maxBottom = 0;
-  for (let i = 0; i < pics.length; i++) {
+  pics.forEach((src,i)=>{
     const img = document.createElement("img");
-    img.src = pics[i];
+    img.src = src;
     img.className = "bouquet-img";
-    img.style.top = positions[i].top + "px";
-    img.style.left = positions[i].left + "px";
-    img.style.transformOrigin = "50% 50%";
-    img.style.animationDelay = (i * 0.2) + "s";
+    img.style.top = pos[i][0]+"px";
+    img.style.left = pos[i][1]+"px";
     bouquet.appendChild(img);
-    const bottom = positions[i].top + 70;
-    if (bottom > maxBottom) maxBottom = bottom;
-  }
+    max = Math.max(max,pos[i][0]+70);
+  });
 
   const wrap = document.createElement("div");
   wrap.className = "bouquet-wrap";
+  wrap.style.top = max+"px";
   wrap.style.left = "50%";
   wrap.style.transform = "translateX(-50%)";
-  wrap.style.top = maxBottom + "px";
   bouquet.appendChild(wrap);
 }
 
-/* ===== CUP MINI GAME ===== */
+/* ================= CUP MINI GAME ================= */
 const cups = document.querySelectorAll("#p1b .cup");
 const cupMessage = document.getElementById("cupMessage");
 const tryAgainBtn = document.getElementById("tryAgainBtn");
@@ -488,102 +480,51 @@ let heartIndex = 0;
 let shuffling = false;
 let gameOver = false;
 
-// Randomize heart
 function randomizeHeart() {
   heartIndex = Math.floor(Math.random() * cups.length);
 }
 
-// Shuffle cups
-function shuffleCups(times = 5, delay = 300) {
-  shuffling = true;
-  gameOver = false;
-  let count = 0;
-
-  const shuffleInterval = setInterval(() => {
-    const order = [...cups.keys()].sort(() => Math.random() - 0.5);
-    cups.forEach((cup, i) => {
-      cup.style.order = order[i];
-      cup.style.transform = "rotate(180deg) translateY(-20px)";
-      cup.classList.remove("show"); // hide any revealed hearts
-    });
-
-    setTimeout(() => {
-      cups.forEach(cup => cup.style.transform = "rotate(180deg)");
-    }, delay / 2);
-    
-/* ===== CUP MINI GAME (FINAL, STABLE) ===== */
-
-const cups = document.querySelectorAll("#p1b .cup");
-const cupMessage = document.getElementById("cupMessage");
-const tryAgainBtn = document.getElementById("tryAgainBtn");
-
-let heartIndex = 0;
-let shuffling = false;
-let gameOver = false;
-
-/* Pick random cup for heart */
-function randomizeHeart() {
-  heartIndex = Math.floor(Math.random() * cups.length);
-}
-
-/* Shuffle cups visually */
 function shuffleCups(times = 5, delay = 300) {
   shuffling = true;
   gameOver = false;
   cupMessage.textContent = "";
   tryAgainBtn.style.display = "none";
-
-  cups.forEach(cup => cup.classList.remove("show"));
+  cups.forEach(c => c.classList.remove("show"));
 
   let count = 0;
-  const shuffleInterval = setInterval(() => {
-    const order = [...cups.keys()].sort(() => Math.random() - 0.5);
-
-    cups.forEach((cup, i) => {
+  const interval = setInterval(() => {
+    const order = [...cups.keys()].sort(()=>Math.random()-0.5);
+    cups.forEach((cup,i)=>{
       cup.style.order = order[i];
       cup.style.transform = "rotate(180deg) translateY(-20px)";
     });
+    setTimeout(()=>cups.forEach(c=>c.style.transform="rotate(180deg)"), delay/2);
 
-    setTimeout(() => {
-      cups.forEach(cup => {
-        cup.style.transform = "rotate(180deg)";
-      });
-    }, delay / 2);
-
-    count++;
-    if (count >= times) {
-      clearInterval(shuffleInterval);
+    if (++count >= times) {
+      clearInterval(interval);
       randomizeHeart();
       shuffling = false;
     }
   }, delay);
 }
 
-/* Cup click handler */
-cups.forEach((cup, i) => {
+cups.forEach((cup, index) => {
   cup.addEventListener("click", () => {
     if (shuffling || gameOver) return;
 
-    // lift animation
     cup.style.transform = "rotate(180deg) translateY(-50px)";
-    setTimeout(() => {
-      cup.style.transform = "rotate(180deg)";
-    }, 500);
+    setTimeout(()=>cup.style.transform="rotate(180deg)",500);
 
-    if (i === heartIndex) {
+    if (index === heartIndex) {
       gameOver = true;
       cup.classList.add("show");
-
       cupMessage.textContent = "You always know my heart hehe ❤️";
-      tryAgainBtn.style.display = "none";
 
-      setTimeout(() => {
-        document.getElementById("p1b").classList.remove("active");
+      setTimeout(()=>{
+        showPage("p2");
         current = 2;
-        document.getElementById("p2").classList.add("active");
         typeEffect();
-      }, 1000);
-
+      },1000);
     } else {
       cupMessage.textContent = "Oops! Try again 😅";
       tryAgainBtn.style.display = "inline-block";
@@ -591,17 +532,14 @@ cups.forEach((cup, i) => {
   });
 });
 
-/* Try Again */
-tryAgainBtn.addEventListener("click", () => {
-  shuffleCups();
-});
+tryAgainBtn.addEventListener("click", shuffleCups);
 
-/* Start game */
+/* ================= INIT ================= */
 shuffleCups();
 </script>
 </body>
-
 </html>
+
 
 
 
