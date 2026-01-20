@@ -471,7 +471,8 @@ function loadBouquet() {
   bouquet.appendChild(wrap);
 }
 
-/* ================= CUP MINI GAME ================= */
+/* ===== CUP MINI GAME (FINAL – NO DUPLICATES, NO BUGS) ===== */
+
 const cups = document.querySelectorAll("#p1b .cup");
 const cupMessage = document.getElementById("cupMessage");
 const tryAgainBtn = document.getElementById("tryAgainBtn");
@@ -481,13 +482,15 @@ let shuffling = false;
 let gameOver = false;
 let shuffleInterval = null;
 
+/* Pick random cup */
 function randomizeHeart() {
   heartIndex = Math.floor(Math.random() * cups.length);
 }
 
+/* Shuffle cups */
 function shuffleCups(times = 5, delay = 300) {
-  // STOP any previous shuffle first
-  if (shuffleInterval) {
+  // 🔴 stop any previous shuffle FIRST
+  if (shuffleInterval !== null) {
     clearInterval(shuffleInterval);
     shuffleInterval = null;
   }
@@ -497,7 +500,10 @@ function shuffleCups(times = 5, delay = 300) {
   cupMessage.textContent = "";
   tryAgainBtn.style.display = "none";
 
-  cups.forEach(cup => cup.classList.remove("show"));
+  cups.forEach(cup => {
+    cup.classList.remove("show");
+    cup.style.transform = "rotate(180deg)";
+  });
 
   let count = 0;
 
@@ -516,32 +522,39 @@ function shuffleCups(times = 5, delay = 300) {
     }, delay / 2);
 
     count++;
+
     if (count >= times) {
       clearInterval(shuffleInterval);
       shuffleInterval = null;
       randomizeHeart();
-      shuffling = false; // 🔴 THIS is the key
+      shuffling = false;
     }
   }, delay);
-  }
+}
 
+/* Cup click */
 cups.forEach((cup, index) => {
   cup.addEventListener("click", () => {
     if (shuffling || gameOver) return;
 
     cup.style.transform = "rotate(180deg) translateY(-50px)";
-    setTimeout(()=>cup.style.transform="rotate(180deg)",500);
+    setTimeout(() => {
+      cup.style.transform = "rotate(180deg)";
+    }, 500);
 
     if (index === heartIndex) {
       gameOver = true;
       cup.classList.add("show");
-      cupMessage.textContent = "You always know my heart hehe ❤️";
 
-      setTimeout(()=>{
-        showPage("p2");
+      cupMessage.textContent = "You always know my heart hehe ❤️";
+      tryAgainBtn.style.display = "none";
+
+      setTimeout(() => {
+        document.getElementById("p1b").classList.remove("active");
         current = 2;
+        document.getElementById("p2").classList.add("active");
         typeEffect();
-      },1000);
+      }, 1000);
     } else {
       cupMessage.textContent = "Oops! Try again 😅";
       tryAgainBtn.style.display = "inline-block";
@@ -549,13 +562,15 @@ cups.forEach((cup, index) => {
   });
 });
 
-tryAgainBtn.addEventListener("click", shuffleCups);
-
-/* ================= INIT ================= */
-shuffleCups();
+/* Try Again */
+tryAgainBtn.addEventListener("click", () => {
+  shuffleCups();
+});
+  
 </script>
 </body>
 </html>
+
 
 
 
