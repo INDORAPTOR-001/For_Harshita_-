@@ -225,11 +225,12 @@ img.bouquet-img {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(0deg); /* heart upright */
+  transform: translate(-50%, -50%) rotate(180deg); /* FIX */
   font-size: 30px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+                    
 }
 
 .cup.show .inside {
@@ -509,6 +510,45 @@ function shuffleCups(times = 5, delay = 300) {
     setTimeout(() => {
       cups.forEach(cup => cup.style.transform = "rotate(180deg)");
     }, delay / 2);
+    
+/* ===== CUP MINI GAME (FINAL, STABLE) ===== */
+
+const cups = document.querySelectorAll("#p1b .cup");
+const cupMessage = document.getElementById("cupMessage");
+const tryAgainBtn = document.getElementById("tryAgainBtn");
+
+let heartIndex = 0;
+let shuffling = false;
+let gameOver = false;
+
+/* Pick random cup for heart */
+function randomizeHeart() {
+  heartIndex = Math.floor(Math.random() * cups.length);
+}
+
+/* Shuffle cups visually */
+function shuffleCups(times = 5, delay = 300) {
+  shuffling = true;
+  gameOver = false;
+  cupMessage.textContent = "";
+  tryAgainBtn.style.display = "none";
+
+  cups.forEach(cup => cup.classList.remove("show"));
+
+  let count = 0;
+  const shuffleInterval = setInterval(() => {
+    const order = [...cups.keys()].sort(() => Math.random() - 0.5);
+
+    cups.forEach((cup, i) => {
+      cup.style.order = order[i];
+      cup.style.transform = "rotate(180deg) translateY(-20px)";
+    });
+
+    setTimeout(() => {
+      cups.forEach(cup => {
+        cup.style.transform = "rotate(180deg)";
+      });
+    }, delay / 2);
 
     count++;
     if (count >= times) {
@@ -519,18 +559,21 @@ function shuffleCups(times = 5, delay = 300) {
   }, delay);
 }
 
-// Cup click
-cups.forEach(cup => {
+/* Cup click handler */
+cups.forEach((cup, i) => {
   cup.addEventListener("click", () => {
     if (shuffling || gameOver) return;
 
-    const index = parseInt(cup.getAttribute("data-index"));
+    // lift animation
     cup.style.transform = "rotate(180deg) translateY(-50px)";
-    cup.classList.add("show"); // reveals heart
-    setTimeout(() => cup.style.transform = "rotate(180deg)", 500);
+    setTimeout(() => {
+      cup.style.transform = "rotate(180deg)";
+    }, 500);
 
-    if (index === heartIndex) {
+    if (i === heartIndex) {
       gameOver = true;
+      cup.classList.add("show");
+
       cupMessage.textContent = "You always know my heart hehe ❤️";
       tryAgainBtn.style.display = "none";
 
@@ -540,6 +583,7 @@ cups.forEach(cup => {
         document.getElementById("p2").classList.add("active");
         typeEffect();
       }, 1000);
+
     } else {
       cupMessage.textContent = "Oops! Try again 😅";
       tryAgainBtn.style.display = "inline-block";
@@ -547,17 +591,18 @@ cups.forEach(cup => {
   });
 });
 
-// Try Again button
+/* Try Again */
 tryAgainBtn.addEventListener("click", () => {
-  cupMessage.textContent = "";
-  tryAgainBtn.style.display = "none";
-  cups.forEach(c => c.classList.remove("show"));
   shuffleCups();
 });
+
+/* Start game */
+shuffleCups();
 </script>
 </body>
 
 </html>
+
 
 
 
