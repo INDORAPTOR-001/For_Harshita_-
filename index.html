@@ -405,8 +405,22 @@ function replay() {
   location.reload();
 }
 function playPoem() {
-  const audio = document.getElementById("poemAudio");
-  audio.play().catch(() => {});
+  const poemAudio = document.getElementById("poemAudio");
+  const bgMusic = document.getElementById("music");
+
+  // pause background music
+  if (!bgMusic.paused) {
+    bgMusic.pause();
+  }
+
+  // restart poem audio from beginning
+  poemAudio.currentTime = 0;
+  poemAudio.play().catch(() => {});
+
+  // resume music after poem ends
+  poemAudio.onended = () => {
+    bgMusic.play().catch(() => {});
+  };
   }
 /* ================= HEART TRAIL ================= */
 document.addEventListener("click", e => {
@@ -569,5 +583,6 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
