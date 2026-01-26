@@ -322,6 +322,13 @@ img.bouquet-img {
 
   <p>And if love ever begins somewhere,</p>
   <p>I hope it begins like this.</p>
+  <button onclick="playPoem()" style="margin-top:16px;">
+  🔊 Tap if you want to hear me read this 🤍
+</button>
+
+<audio id="poemAudio">
+  <source src="poem.mp3" type="audio/mpeg">
+</audio>
 </div><button onclick="next()">Next 🌙</button></div></div>
 
 <div class="page" id="p9"><div class="card"><h1>The moon is beautiful, isn't it? 🌕</h1>
@@ -397,7 +404,10 @@ function toggleMusic() {
 function replay() {
   location.reload();
 }
-
+function playPoem() {
+  const audio = document.getElementById("poemAudio");
+  audio.play().catch(() => {});
+  }
 /* ================= HEART TRAIL ================= */
 document.addEventListener("click", e => {
   const h = document.createElement("div");
@@ -559,4 +569,5 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
