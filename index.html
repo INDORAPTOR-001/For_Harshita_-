@@ -236,6 +236,40 @@ img.bouquet-img {
 .cup.show .inside {
   opacity: 1;
   }
+  /* ===== VISUAL POLISH ===== */
+
+.card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.page.active .card {
+  transform: scale(1.02);
+}
+
+button {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255, 77, 109, 0.35);
+}
+
+/* smoother page appearance */
+@keyframes slideFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page.active {
+  animation: slideFade 0.6s ease;
+  }
 </style>
 </head>
 <body>
@@ -583,6 +617,7 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
