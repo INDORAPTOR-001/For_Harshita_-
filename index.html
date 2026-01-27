@@ -404,6 +404,23 @@ function toggleMusic() {
 function replay() {
   location.reload();
 }
+  /* ================= POEM AUDIO ================= */
+function playPoem() {
+  const poemAudio = document.getElementById("poemAudio");
+  const bgMusic = document.getElementById("music");
+
+  // mute background music
+  bgMusic.dataset.prevVolume = bgMusic.volume;
+  bgMusic.volume = 0;
+
+  poemAudio.currentTime = 0;
+  poemAudio.play().catch(() => {});
+
+  // restore music when poem ends
+  poemAudio.onended = () => {
+    bgMusic.volume = bgMusic.dataset.prevVolume || 1;
+  };
+}
 
 /* ================= HEART TRAIL ================= */
 document.addEventListener("click", e => {
@@ -424,24 +441,8 @@ for (let k = 0; k < 35; k++) {
   f.innerText = icons[Math.floor(Math.random() * icons.length)];
   f.style.left = Math.random() * 100 + "vw";
   f.style.animationDuration = (5 + Math.random() * 6) + "s";
-  documefunction playPoem() {
-  const poemAudio = document.getElementById("poemAudio");
-  const bgMusic = document.getElementById("music");
-
-  // mute background music safely
-  bgMusic.dataset.prevVolume = bgMusic.volume;
-  bgMusic.volume = 0;
-
-  // restart and play poem
-  poemAudio.currentTime = 0;
-  poemAudio.play().catch(() => {});
-
-  // restore music after poem finishes
-  poemAudio.onended = () => {
-    bgMusic.volume = bgMusic.dataset.prevVolume || 1;
-  };
-  }nt.body.appendChild(f);
-}
+  document.body.appendChild(f);
+                                                       }
 
 /* ================= YES / NO ================= */
 function yesClick() {
@@ -582,6 +583,7 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
