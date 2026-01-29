@@ -442,10 +442,15 @@ function nextToMiniGame() {
   music.play().catch(() => {});
 }
 function goToLetter() {
-  document.getElementById("p8").classList.remove("active");
+  // remove active from ANY page
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+
+  // activate letter page
   document.getElementById("p9").classList.add("active");
-  current = 9; 
-}
+
+  // sync page counter
+  current = 9;
+  }
 /* ================= TYPE EFFECTS ================= */
 function typeEffect() {
   if (i < typingLine.length) {
@@ -654,3 +659,4 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
