@@ -367,7 +367,7 @@ button:hover {
 
   </div>
 </div>
-  <div class="page" id="pLetter">
+  <div class="page" id="p9">
   <div class="card">
     <h1 style="font-family:cursive;">A smol letter for you hehe 💌</h1>
 
@@ -398,18 +398,18 @@ button:hover {
     <button onclick="next()">Next 🌙</button>
   </div>
   </div>
-<div class="page" id="p9"><div class="card"><h1>The moon is beautiful, isn't it? 🌕</h1>
+<div class="page" id="p10"><div class="card"><h1>The moon is beautiful, isn't it? 🌕</h1>
 <img src="moon.jpg" style="width:180px;border-radius:12px;margin-top:12px;">
 <p>(Are you nerdy enough to understand this?)</p>
 <button onclick="next()">Next 💖</button></div></div>
 
-<div class="page" id="p10"><div class="card">
+<div class="page" id="p11"><div class="card">
 <p>With all my love,<br>
 Your lovingly, Indoraaaa / Mr. NRI / Mr. Angreez 💖</p>
 <button onclick="next()">Next 🔁</button>
 </div></div>
 
-<div class="page" id="p11"><div class="card"><h1>Replay?</h1><button onclick="replay()">Replay 🔁</button></div></div>
+<div class="page" id="p12"><div class="card"><h1>Replay?</h1><button onclick="replay()">Replay 🔁</button></div></div>
 
 <div class="page" id="heartbreak"><div class="card"><h1>You broke my heart 💔🥀</h1><button onclick="replay()">Try again 🔁</button></div></div>
 
@@ -426,7 +426,7 @@ const sweetLine = "Thinking of you makes my heart skip a beat ❤️💓";
 function next(startMusic = false) {
   document.getElementById("p" + current).classList.remove("active");
   current++;
-  if (current > 11) current = 11;
+  if (current > 12) current = 12;
   document.getElementById("p" + current).classList.add("active");
 
   if (startMusic) music.play().catch(() => {});
@@ -654,6 +654,7 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
