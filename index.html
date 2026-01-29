@@ -363,7 +363,38 @@ button:hover {
 <audio id="poemAudio">
   <source src="poem.mp3" type="audio/mpeg">
 </audio>
-</div><button onclick="next()">Next 🌙</button></div></div>
+<button onclick="goToLetter()">Read the letter 👀</button>
+  <div class="page" id="pLetter">
+  <div class="card">
+    <h1 style="font-family:cursive;">A smol letter for you hehe 💌</h1>
+
+    <div style="
+      font-family: 'cursive';
+      font-size: 17px;
+      line-height: 1.7;
+      max-height: 60vh;
+      overflow-y: auto;
+      text-align: left;
+      padding-right: 6px;
+    ">
+
+      <p>
+      I don't really write letters, andd I really don't know how to start this but yeah I really wanted to write one for you (I really wish I could write one irl for you 🥲). So here it is hehe. Sooo there are days when very very stressful and hard enough sometimes I can't handle things of my own, buut when atleast a text of yours come across my phone, everything slows down by a bit. You know when you call, all my stress just disappears like that, yk I really lovee your voice soooo sweet like honey.
+      </p>
+
+      <p>
+      If you ask me what I like about you, I can't point out things, because I really really love everythingg about you, let it be smol things that you do or bigger things everything about you is special for me. I find it strange let it be a text or a call of yours, it changes my entire mood for the rest of the time. There were times when my mom caught me smiling while chatting with you 💀, and honestly I've never found myself in that state. Honestly it doesn't surprise me, because it's YOU!
+      </p>
+
+      <p>
+      feelings come, stay, go but for yours, trust me it never left since I got to know you, even after things we had some months ago.... It still stayed as it is. For me, you are the most beautiful woman in the world, so pretty, cute and someone I didn't know I would fall for this hard. I've always cared for you, always your opinion and things mattered over me, and there were times where I did not even care about my happiness and did things for you. I'm keeping this letter short for now... Whenever you read this I hope maybe it brings a smile on your face hehe 👀. Idk what else to say for rn, sooo that's gonna be it for now. I've always always loved you ❤️.
+      </p>
+
+    </div>
+
+    <button onclick="next()">Next 🌙</button>
+  </div>
+</div>
 
 <div class="page" id="p9"><div class="card"><h1>The moon is beautiful, isn't it? 🌕</h1>
 <img src="moon.jpg" style="width:180px;border-radius:12px;margin-top:12px;">
@@ -408,7 +439,11 @@ function nextToMiniGame() {
   startCupGame();
   music.play().catch(() => {});
 }
-
+function goToLetter() {
+  document.getElementById("p8").classList.remove("active");
+  document.getElementById("pLetter").classList.add("active");
+  current = 9; 
+}
 /* ================= TYPE EFFECTS ================= */
 function typeEffect() {
   if (i < typingLine.length) {
@@ -617,6 +652,7 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
