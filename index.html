@@ -423,6 +423,7 @@ let current = 1, i = 0, j = 0, hoverCount = 0;
 const music = document.getElementById("music");
 const muteBtn = document.getElementById("muteBtn");
 const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseenter", moveNoBtn);
 
 const typingLine = "You're in my mind 24/7. Not occasionally. Just always.";
 const sweetLine = "Thinking of you makes my heart skip a beat ❤️💓";
@@ -664,6 +665,7 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
