@@ -644,7 +644,7 @@ function moveNoBtn() {
   hoverCount++;
 
   if (hoverCount > 30) {
-    document.getElementById("p" + current)?.classList.remove("active");
+    document.getElementById("p3")?.classList.remove("active");
     document.getElementById("heartbreak").classList.add("active");
     return;
   }
@@ -662,10 +662,14 @@ function moveNoBtn() {
 noBtn.addEventListener("mouseenter", moveNoBtn);
 
 // Mobile
-noBtn.addEventListener("touchstart", moveNoBtn, { passive: false });
+noBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  moveNoBtn();
+});
 </script>
 </body>
 </html>
+
 
 
 
