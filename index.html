@@ -424,7 +424,7 @@ const typingLine = "You're in my mind 24/7. Not occasionally. Just always.";
 const sweetLine = "Thinking of you makes my heart skip a beat ❤️💓";
 
 /* ================= PAGE NAVIGATION ================= */
-function next(startMusic = false) {
+function next(startMusic = true) {
   document.getElementById("p" + current).classList.remove("active");
   current++;
   if (current > 12) current = 12;
@@ -658,6 +658,7 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
