@@ -443,15 +443,13 @@ function nextToMiniGame() {
   music.play().catch(() => {});
 }
 function goToLetter() {
-  // remove active from ANY page
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.remove("active")
+  );
 
-  // activate letter page
   document.getElementById("p9").classList.add("active");
-
-  // sync page counter
   current = 9;
-  }
+}
 /* ================= TYPE EFFECTS ================= */
 function typeEffect() {
   if (i < typingLine.length) {
@@ -660,5 +658,6 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
