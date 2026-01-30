@@ -270,8 +270,10 @@ button:hover {
 .page.active {
   animation: slideFade 0.6s ease;
   }
-  #noBtn {
+#noBtn {
   transition: left 0.25s ease, top 0.25s ease;
+  position: fixed;
+  z-index: 9999;
   }
 </style>
 </head>
@@ -423,7 +425,6 @@ let current = 1, i = 0, j = 0, hoverCount = 0;
 const music = document.getElementById("music");
 const muteBtn = document.getElementById("muteBtn");
 const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseenter", moveNoBtn);
 
 const typingLine = "You're in my mind 24/7. Not occasionally. Just always.";
 const sweetLine = "Thinking of you makes my heart skip a beat ❤️💓";
@@ -658,13 +659,42 @@ cups.forEach((cup, i) => {
     }
   });
 });
+// ===== NOT SURE BUTTON DODGE (FINAL, SAFE) =====
+function moveNoBtn(e) {
+  if (e) e.preventDefault(); // IMPORTANT for mobile
 
-tryAgainBtn.addEventListener("click", () => {
-  startCupGame();
-});
+  hoverCount++;
+
+  if (hoverCount > 30) {
+    document.getElementById("p" + current)?.classList.remove("active");
+    document.getElementById("heartbreak").classList.add("active");
+    return;
+  }
+
+  // force button to float freely
+  noBtn.style.position = "fixed";
+  noBtn.style.zIndex = "9999";
+
+  const padding = 20;
+  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+}
+
+// Desktop
+noBtn.addEventListener("mouseenter", moveNoBtn);
+
+// Mobile
+noBtn.addEventListener("touchstart", moveNoBtn, { passive: false });
 </script>
 </body>
 </html>
+
 
 
 
