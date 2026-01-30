@@ -529,24 +529,6 @@ for (let k = 0; k < 35; k++) {
 function yesClick() {
   next();
 }
-
-function moveNoBtn() {
-  hoverCount++;
-
-  if (hoverCount > 30) {
-    document.getElementById("p" + current)?.classList.remove("active");
-    document.getElementById("heartbreak").classList.add("active");
-    return;
-  }
-
-  const padding = 20;
-  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
-
-  noBtn.style.position = "fixed";
-  noBtn.style.left = Math.random() * maxX + "px";
-  noBtn.style.top = Math.random() * maxY + "px";
-}
 /* ================= BOUQUET ================= */
 function loadBouquet() {
   const bouquet = document.getElementById("bouquet");
@@ -684,6 +666,7 @@ noBtn.addEventListener("touchstart", moveNoBtn, { passive: false });
 </script>
 </body>
 </html>
+
 
 
 
