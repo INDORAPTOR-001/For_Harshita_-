@@ -524,22 +524,23 @@ function yesClick() {
   next();
 }
 
-const noBtn = document.getElementById("noBtn");
-if (noBtn) {
-  const moveNoBtn = () => {
-    hoverCount++;
-    if (hoverCount > 30) {
-      document.getElementById("p" + current).classList.remove("active");
-      document.getElementById("heartbreak").classList.add("active");
-    } else {
-      noBtn.style.position = "absolute";
-      noBtn.style.left = Math.random() * 60 + 10 + "%";
-      noBtn.style.top = Math.random() * 60 + 10 + "%";
-    }
-  };
-  noBtn.addEventListener("mouseenter", moveNoBtn);
-  noBtn.addEventListener("touchstart", moveNoBtn);
-}
+const moveNoBtn = () => {
+  hoverCount++;
+
+  if (hoverCount > 30) {
+    document.getElementById("p" + current).classList.remove("active");
+    document.getElementById("heartbreak").classList.add("active");
+  } else {
+    noBtn.style.position = "fixed";
+
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+  }
+};
 
 /* ================= BOUQUET ================= */
 function loadBouquet() {
@@ -658,6 +659,7 @@ tryAgainBtn.addEventListener("click", () => {
 </script>
 </body>
 </html>
+
 
 
 
