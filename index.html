@@ -659,10 +659,8 @@ cups.forEach((cup, i) => {
     }
   });
 });
-// ===== NOT SURE BUTTON DODGE (FINAL, SAFE) =====
-function moveNoBtn(e) {
-  if (e) e.preventDefault(); // IMPORTANT for mobile
-
+// ===== NOT SURE BUTTON DODGE =====
+function moveNoBtn() {
   hoverCount++;
 
   if (hoverCount > 30) {
@@ -671,19 +669,13 @@ function moveNoBtn(e) {
     return;
   }
 
-  // force button to float freely
-  noBtn.style.position = "fixed";
-  noBtn.style.zIndex = "9999";
-
   const padding = 20;
   const maxX = window.innerWidth - noBtn.offsetWidth - padding;
   const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
-
-  noBtn.style.left = randomX + "px";
-  noBtn.style.top = randomY + "px";
+  noBtn.style.position = "fixed";
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
 }
 
 // Desktop
@@ -694,6 +686,7 @@ noBtn.addEventListener("touchstart", moveNoBtn, { passive: false });
 </script>
 </body>
 </html>
+
 
 
 
