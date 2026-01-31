@@ -424,7 +424,7 @@ Your lovingly, Indoraaaa / Mr. NRI / Mr. Angreez 💖</p>
 let current = 1, i = 0, j = 0, hoverCount = 0;
 const music = document.getElementById("music");
 const muteBtn = document.getElementById("muteBtn");
-const noBtn = document.getElementById("noBtn");
+let noBtn = null;
 
 const typingLine = "You're in my mind 24/7. Not occasionally. Just always.";
 const sweetLine = "Thinking of you makes my heart skip a beat ❤️💓";
@@ -455,6 +455,7 @@ function goToLetter() {
 
   document.getElementById("p9").classList.add("active");
   current = 9;
+  if (current === 3) setupNoBtn();
 }
 /* ================= TYPE EFFECTS ================= */
 function typeEffect() {
@@ -639,18 +640,28 @@ cups.forEach((cup, i) => {
     }
   });
 });
-// ===== NOT SURE BUTTON DODGE (FINAL & CORRECT) =====
+// ===== NOT SURE BUTTON DODGE (SAFE & FIXED) =====
+function setupNoBtn() {
+  noBtn = document.getElementById("noBtn");
+  if (!noBtn) return; // page not loaded yet
+
+  noBtn.addEventListener("mouseenter", moveNoBtn);
+  noBtn.addEventListener("click", moveNoBtn);
+  noBtn.addEventListener("touchstart", e => {
+    e.preventDefault();
+    moveNoBtn();
+  });
+}
+
 function moveNoBtn() {
   hoverCount++;
 
-  // after too many dodges → heartbreak
   if (hoverCount > 30) {
     document.getElementById("p3")?.classList.remove("active");
     document.getElementById("heartbreak").classList.add("active");
     return;
   }
 
-  // switch to fixed ONLY when it starts dodging
   if (noBtn.style.position !== "fixed") {
     const rect = noBtn.getBoundingClientRect();
     noBtn.style.position = "fixed";
@@ -662,23 +673,13 @@ function moveNoBtn() {
   const maxX = window.innerWidth - noBtn.offsetWidth - padding;
   const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-  const x = Math.max(padding, Math.random() * maxX);
-  const y = Math.max(padding, Math.random() * maxY);
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-}
-
-// attach listeners ONCE (outside the function)
-noBtn.addEventListener("mouseenter", moveNoBtn);
-noBtn.addEventListener("click", moveNoBtn);
-noBtn.addEventListener("touchstart", e => {
-  e.preventDefault();
-  moveNoBtn();
-});
+  noBtn.style.left = Math.max(padding, Math.random() * maxX) + "px";
+  noBtn.style.top  = Math.max(padding, Math.random() * maxY) + "px";
+  }
 </script>
 </body>
 </html>
+
 
 
 
