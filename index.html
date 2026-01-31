@@ -641,28 +641,28 @@ cups.forEach((cup, i) => {
     }
   });
 });
-/* ===== NOT SURE BUTTON — SCREEN-WIDE DODGE (CORRECT FIX) ===== */
+/* ===== NOT SURE BUTTON — FINAL, STABLE & CORRECT ===== */
+
 let noBtnInitialized = false;
+let noBtnFree = false;
 
 function setupNoBtn() {
   const btn = document.getElementById("noBtn");
-  const yesBtn = document.querySelector("#p3 button"); // Yes button
+  const yesBtn = document.querySelector("#p3 button");
 
   if (!btn || !yesBtn || noBtnInitialized) return;
   noBtnInitialized = true;
   hoverCount = 0;
 
-  // Make it float on screen
-  btn.style.position = "fixed";
-  btn.style.zIndex = "9999";
+  // RESET styles (important if replayed)
+  btn.style.position = "static";
+  btn.style.left = "";
+  btn.style.top = "";
+  btn.style.transform = "";
   btn.style.display = "inline-block";
+  btn.style.zIndex = "9999";
 
-  // Place it near YES button initially
-  const yesRect = yesBtn.getBoundingClientRect();
-  btn.style.left = yesRect.right + 12 + "px";
-  btn.style.top = yesRect.top + "px";
-
-  const move = () => {
+  function move() {
     hoverCount++;
 
     if (hoverCount >= 31) {
@@ -671,16 +671,33 @@ function setupNoBtn() {
       return;
     }
 
-    const padding = 12;
+    // First interaction → detach from card
+    if (!noBtnFree) {
+      const rect = btn.getBoundingClientRect();
+      btn.style.position = "fixed";
+      btn.style.left = rect.left + "px";
+      btn.style.top = rect.top + "px";
+      noBtnFree = true;
+    }
+
+    const padding = 16;
+
     const maxX = window.innerWidth - btn.offsetWidth - padding;
     const maxY = window.innerHeight - btn.offsetHeight - padding;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+    const x = Math.min(
+      maxX,
+      Math.max(padding, Math.random() * maxX)
+    );
+
+    const y = Math.min(
+      maxY,
+      Math.max(padding, Math.random() * maxY)
+    );
 
     btn.style.left = x + "px";
     btn.style.top = y + "px";
-  };
+  }
 
   // Desktop
   btn.addEventListener("mouseenter", move);
@@ -691,10 +708,11 @@ function setupNoBtn() {
     e.preventDefault();
     move();
   });
-  }
+}
 </script>
 </body>
 </html>
+
 
 
 
