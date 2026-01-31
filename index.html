@@ -641,46 +641,53 @@ cups.forEach((cup, i) => {
     }
   });
 });
-// ===== NOT SURE BUTTON — FINAL FIX (DO NOT EDIT) =====
+/* ===== NOT SURE BUTTON — SCREEN-WIDE DODGE (CORRECT FIX) ===== */
 let hoverCount = 0;
 let noBtnInitialized = false;
 
 function setupNoBtn() {
   const btn = document.getElementById("noBtn");
-  if (!btn || noBtnInitialized) return;
+  const yesBtn = document.querySelector("#p3 button"); // Yes button
 
+  if (!btn || !yesBtn || noBtnInitialized) return;
   noBtnInitialized = true;
   hoverCount = 0;
 
-  // force visibility
-  btn.style.display = "inline-block";
+  // Make it float on screen
   btn.style.position = "fixed";
   btn.style.zIndex = "9999";
+  btn.style.display = "inline-block";
 
-  // initial position (where it visually appears)
-  const rect = btn.getBoundingClientRect();
-  btn.style.left = rect.left + "px";
-  btn.style.top  = rect.top + "px";
+  // Place it near YES button initially
+  const yesRect = yesBtn.getBoundingClientRect();
+  btn.style.left = yesRect.right + 12 + "px";
+  btn.style.top = yesRect.top + "px";
 
   const move = () => {
     hoverCount++;
 
-    if (hoverCount > 30) {
+    if (hoverCount >= 31) {
       document.getElementById("p3").classList.remove("active");
       document.getElementById("heartbreak").classList.add("active");
       return;
     }
 
-    const padding = 20;
+    const padding = 12;
     const maxX = window.innerWidth - btn.offsetWidth - padding;
     const maxY = window.innerHeight - btn.offsetHeight - padding;
 
-    btn.style.left = Math.random() * maxX + "px";
-    btn.style.top  = Math.random() * maxY + "px";
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
   };
 
+  // Desktop
   btn.addEventListener("mouseenter", move);
   btn.addEventListener("click", move);
+
+  // Mobile
   btn.addEventListener("touchstart", e => {
     e.preventDefault();
     move();
@@ -689,6 +696,7 @@ function setupNoBtn() {
 </script>
 </body>
 </html>
+
 
 
 
