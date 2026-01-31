@@ -639,10 +639,7 @@ cups.forEach((cup, i) => {
     }
   });
 });
-// ===== NOT SURE BUTTON DODGE (FINAL, FIXED) =====
-let hoverCount = 0;
-const noBtn = document.getElementById("noBtn");
-
+// ===== NOT SURE BUTTON DODGE (FINAL & CORRECT) =====
 function moveNoBtn() {
   hoverCount++;
 
@@ -653,7 +650,7 @@ function moveNoBtn() {
     return;
   }
 
-  // lock position only when first dodging
+  // switch to fixed ONLY when it starts dodging
   if (noBtn.style.position !== "fixed") {
     const rect = noBtn.getBoundingClientRect();
     noBtn.style.position = "fixed";
@@ -672,11 +669,9 @@ function moveNoBtn() {
   noBtn.style.top = y + "px";
 }
 
-// desktop
+// attach listeners ONCE (outside the function)
 noBtn.addEventListener("mouseenter", moveNoBtn);
 noBtn.addEventListener("click", moveNoBtn);
-
-// mobile
 noBtn.addEventListener("touchstart", e => {
   e.preventDefault();
   moveNoBtn();
@@ -684,6 +679,7 @@ noBtn.addEventListener("touchstart", e => {
 </script>
 </body>
 </html>
+
 
 
 
