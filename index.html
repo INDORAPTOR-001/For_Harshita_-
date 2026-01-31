@@ -641,12 +641,24 @@ cups.forEach((cup, i) => {
     }
   });
 });
-// ===== NOT SURE BUTTON DODGE (SAFE & FIXED) =====
+// ===== NOT SURE BUTTON — FINAL GUARANTEED FIX =====
+let noBtnInitialized = false;
+
 function setupNoBtn() {
-// ===== NOT SURE BUTTON DODGE (SAFE & FIXED) =====
-function setupNoBtn() {
+  if (noBtnInitialized) return;
+
   noBtn = document.getElementById("noBtn");
-  if (!noBtn) return; // page not loaded yet
+  if (!noBtn) return;
+
+  noBtnInitialized = true;
+
+  // force layout stabilization
+  requestAnimationFrame(() => {
+    const rect = noBtn.getBoundingClientRect();
+    noBtn.style.position = "fixed";
+    noBtn.style.left = rect.left + "px";
+    noBtn.style.top = rect.top + "px";
+  });
 
   noBtn.addEventListener("mouseenter", moveNoBtn);
   noBtn.addEventListener("click", moveNoBtn);
@@ -665,23 +677,20 @@ function moveNoBtn() {
     return;
   }
 
-  if (noBtn.style.position !== "fixed") {
-    const rect = noBtn.getBoundingClientRect();
-    noBtn.style.position = "fixed";
-    noBtn.style.left = rect.left + "px";
-    noBtn.style.top = rect.top + "px";
-  }
-
   const padding = 16;
   const maxX = window.innerWidth - noBtn.offsetWidth - padding;
   const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-  noBtn.style.left = Math.max(padding, Math.random() * maxX) + "px";
-  noBtn.style.top  = Math.max(padding, Math.random() * maxY) + "px";
-      }
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = Math.max(padding, x) + "px";
+  noBtn.style.top  = Math.max(padding, y) + "px";
+  }
 </script>
 </body>
 </html>
+
 
 
 
