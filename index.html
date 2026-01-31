@@ -438,6 +438,7 @@ function next(startMusic = true) {
 
   if (startMusic) music.play().catch(() => {});
   if (current === 2) typeEffect();
+  if (current === 3) setupNoBtn();
   if (current === 5) sweetEffect();
   if (current === 6) loadBouquet();
 }
@@ -642,6 +643,8 @@ cups.forEach((cup, i) => {
 });
 // ===== NOT SURE BUTTON DODGE (SAFE & FIXED) =====
 function setupNoBtn() {
+// ===== NOT SURE BUTTON DODGE (SAFE & FIXED) =====
+function setupNoBtn() {
   noBtn = document.getElementById("noBtn");
   if (!noBtn) return; // page not loaded yet
 
@@ -675,10 +678,11 @@ function moveNoBtn() {
 
   noBtn.style.left = Math.max(padding, Math.random() * maxX) + "px";
   noBtn.style.top  = Math.max(padding, Math.random() * maxY) + "px";
-  }
+      }
 </script>
 </body>
 </html>
+
 
 
 
