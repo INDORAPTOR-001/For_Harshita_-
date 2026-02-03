@@ -641,60 +641,66 @@ cups.forEach((cup, i) => {
     }
   });
 });
-/* ===== NOT SURE BUTTON (SIMPLE & STABLE) ===== */
-let noBtnInitialized = false;
-
+/* ===== NOT SURE BUTTON — BULLETPROOF VERSION ===== */
 function setupNoBtn() {
-  const btn = document.getElementById("noBtn");
-  const yesBtn = document.querySelector("#p3 button");
+  const originalBtn = document.getElementById("noBtn");
+  if (!originalBtn) return;
 
-  if (!btn || !yesBtn || noBtnInitialized) return;
-  noBtnInitialized = true;
-  hoverCount = 0;
+  let dodgeCount = 0;
+  let floatingBtn = null;
 
-  /* 1️⃣ START: place near YES (normal layout) */
-  btn.style.position = "relative";
-  btn.style.left = "8px";
-  btn.style.top = "0";
+  function createFloatingBtn() {
+    const rect = originalBtn.getBoundingClientRect();
+
+    floatingBtn = originalBtn.cloneNode(true);
+    floatingBtn.id = "noBtnFloating";
+
+    floatingBtn.style.position = "fixed";
+    floatingBtn.style.left = rect.left + "px";
+    floatingBtn.style.top = rect.top + "px";
+    floatingBtn.style.zIndex = "9999";
+
+    document.body.appendChild(floatingBtn);
+    originalBtn.style.visibility = "hidden";
+
+    floatingBtn.addEventListener("click", dodge);
+    floatingBtn.addEventListener("touchstart", e => {
+      e.preventDefault();
+      dodge();
+    });
+  }
 
   function dodge() {
-    hoverCount++;
+    dodgeCount++;
 
-    if (hoverCount >= 31) {
+    if (dodgeCount >= 31) {
       document.getElementById("p3").classList.remove("active");
       document.getElementById("heartbreak").classList.add("active");
       return;
     }
 
-    /* 2️⃣ SWITCH TO SCREEN MODE */
-    const rect = btn.getBoundingClientRect();
-    btn.style.position = "fixed";
-    btn.style.left = rect.left + "px";
-    btn.style.top = rect.top + "px";
-    btn.style.zIndex = "9999";
-
-    const padding = 10;
-    const maxX = window.innerWidth - btn.offsetWidth - padding;
-    const maxY = window.innerHeight - btn.offsetHeight - padding;
+    const padding = 12;
+    const maxX = window.innerWidth - floatingBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - floatingBtn.offsetHeight - padding;
 
     const x = padding + Math.random() * maxX;
     const y = padding + Math.random() * maxY;
 
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
+    floatingBtn.style.left = x + "px";
+    floatingBtn.style.top = y + "px";
   }
 
-  // Desktop
-  btn.addEventListener("mouseenter", dodge);
-  btn.addEventListener("click", dodge);
-
-  // Mobile
-  btn.addEventListener("touchstart", e => {
-    e.preventDefault();
-    dodge();
+  originalBtn.addEventListener("click", () => {
+    if (!floatingBtn) createFloatingBtn();
   });
-}
+
+  originalBtn.addEventListener("touchstart", e => {
+    e.preventDefault();
+    if (!floatingBtn) createFloatingBtn();
+  });
+  }
 </script>
 </body>
 </html>
+
 
