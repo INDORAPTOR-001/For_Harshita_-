@@ -529,8 +529,10 @@ for (let k = 0; k < 35; k++) {
 
 /* ================= YES / NO ================= */
 function yesClick() {
+  const btn = document.getElementById("noBtn");
+  if (btn) btn.style.display = "none";
   next();
-}
+  }
 /* ================= BOUQUET ================= */
 function loadBouquet() {
   const bouquet = document.getElementById("bouquet");
@@ -644,10 +646,20 @@ cups.forEach((cup, i) => {
 /* ===== NOT SURE BUTTON — BULLETPROOF VERSION ===== */
 function setupNoBtn() {
   const originalBtn = document.getElementById("noBtn");
-  if (!originalBtn) return;
+  const yesBtn = document.querySelector("#p3 button");
+
+  if (!originalBtn || !yesBtn) return;
 
   let dodgeCount = 0;
   let floatingBtn = null;
+
+  function removeFloatingBtn() {
+    if (floatingBtn) {
+      floatingBtn.remove();
+      floatingBtn = null;
+    }
+    originalBtn.style.visibility = "visible";
+  }
 
   function createFloatingBtn() {
     const rect = originalBtn.getBoundingClientRect();
@@ -674,12 +686,13 @@ function setupNoBtn() {
     dodgeCount++;
 
     if (dodgeCount >= 31) {
+      removeFloatingBtn();
       document.getElementById("p3").classList.remove("active");
       document.getElementById("heartbreak").classList.add("active");
       return;
     }
 
-    const padding = 12;
+    const padding = 16;
     const maxX = window.innerWidth - floatingBtn.offsetWidth - padding;
     const maxY = window.innerHeight - floatingBtn.offsetHeight - padding;
 
@@ -690,18 +703,26 @@ function setupNoBtn() {
     floatingBtn.style.top = y + "px";
   }
 
-  originalBtn.addEventListener("click", () => {
+  // Spawn floating button on first interaction
+  originalBtn.onclick = () => {
     if (!floatingBtn) createFloatingBtn();
-  });
+  };
 
-  originalBtn.addEventListener("touchstart", e => {
+  originalBtn.ontouchstart = e => {
     e.preventDefault();
     if (!floatingBtn) createFloatingBtn();
-  });
-  }
+  };
+
+  // CLEANUP when YES is clicked
+  yesBtn.onclick = () => {
+    removeFloatingBtn();
+    next();
+  };
+}
 </script>
 </body>
 </html>
+
 
 
 
